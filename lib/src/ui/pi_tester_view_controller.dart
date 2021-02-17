@@ -27,10 +27,15 @@ class PITesterViewController extends StatelessWidget {
     return Center(
       child: Column(
         children: [
-          Text("top text"),
+          Column(
+            children: [Text("Current Digit"), Text(viewState.currentDigit)],
+          ),
           Expanded(
             child: Center(
-              child: Text(viewState.displayNumber),
+              child: Text(
+                viewState.displayNumber,
+                style: TextStyle(fontSize: 20.0, color: Colors.amberAccent),
+              ),
             ),
           ),
           DigitKeypad(pressedKey),
