@@ -13,32 +13,33 @@ class PITesterViewController extends StatelessWidget {
       stream: piTesterBloc.viewState,
       builder: (context, AsyncSnapshot<PITesterViewState> snapshot) {
         if (snapshot.hasData) {
-          return PITesterView();
+          return View(snapshot.data);
         } else if (snapshot.hasError) {
           return Text(snapshot.error.toString());
         }
         return ElevatedButton(
-            onPressed: keyPressed, child: Text("no data yet"));
+            onPressed: pressedKey(9), child: Text("no data yet"));
       },
     );
   }
 
-  void keyPressed() {
-    piTesterBloc.processInput(PressedKey(4));
-  }
-}
-
-class PITesterView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget View(PITesterViewState viewState) {
     return Center(
       child: Column(
         children: [
           Text("top text"),
-          Expanded(child: Text("Middle text"),),
-          DigitKeypad(),
+          Expanded(
+            child: Center(
+              child: Text(viewState.displayNumber),
+            ),
+          ),
+          DigitKeypad(pressedKey),
         ],
       ),
     );
+  }
+
+  pressedKey(int keyNumber) {
+    piTesterBloc.processInput(PressedKey(keyNumber));
   }
 }

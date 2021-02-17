@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DigitKeypad extends StatelessWidget {
+  DigitKeypad(this.pressedKey);
+  Function pressedKey;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,25 +40,16 @@ class DigitKeypad extends StatelessWidget {
       ),
     );
   }
-  pressedKey(int keyNumber) {
-    print("pressed key " + keyNumber.toString());
-  }
-}
-
-class KeypadKey extends StatelessWidget {
-  KeypadKey(this.myNumber, this.pressedFunction);
-
-  Function pressedFunction;
-  int myNumber;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget KeypadKey(int number, Function pressedFunction){
     return FloatingActionButton.extended(
       onPressed: () {
-        pressedFunction(myNumber);
+        pressedFunction(number);
       },
-      label: Text(myNumber.toString()),
+      label: Text(number.toString()),
       backgroundColor: Colors.pink,
     );
   }
 }
+
+
+
