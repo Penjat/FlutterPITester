@@ -55,7 +55,7 @@ class PITesterBloc {
 
   /// Output
   PITesterViewState resultToState(PITesterResult result) {
-    if(result is CorrectResult){
+    if(result is CorrectResult) {
       return PITesterViewState(piTest.correctDigits(),
           piTest.currentDigit.toString());
     }
