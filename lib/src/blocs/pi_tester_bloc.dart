@@ -8,14 +8,12 @@ class PressedKey extends PITesterIntent {
   PressedKey(this.keyNumber);
   int keyNumber;
 }
+class ResetIntent extends PITesterIntent {}
 
 abstract class PITesterResult{}
-class CorrectResult extends PITesterResult {
-
-}
-class IncorrectResult extends PITesterResult {
-
-}
+class CorrectResult extends PITesterResult {}
+class IncorrectResult extends PITesterResult {}
+class ResetResult extends PITesterResult {}
 
 class PITesterViewState{
   PITesterViewState(this.displayNumber,this.currentDigit);
@@ -26,9 +24,8 @@ class PITesterViewState{
 /// Bloc
 class PITesterBloc {
   final _intents = PublishSubject<PITesterIntent>();
-  String digitsTyped = "";
-  Observable<PITesterResult> get _results => _intents.map(intentToResult);
-  Observable<PITesterViewState> get viewState => _results.map(resultToState).startWith(PITesterViewState(digitsTyped,"0"));
+  Observable<PITesterResult> get _results => _intents.flatMap(intentToResult);
+  Observable<PITesterViewState> get viewState => _results.map(resultToState).startWith(PITesterViewState("","0"));
 
   PiTest piTest = PiTest();
   /// Input
@@ -37,26 +34,32 @@ class PITesterBloc {
   }
 
   /// Internal (side effects)
-  PITesterResult intentToResult(PITesterIntent intent) {
+  Stream<PITesterResult> intentToResult(PITesterIntent intent) {
     if(intent is PressedKey) {
       PressedKey pressedKeyIntnet = intent as PressedKey;
       piTest.checkCorrect(pressedKeyIntnet.keyNumber);
       if(piTest.checkCorrect(pressedKeyIntnet.keyNumber)) {
         piTest.addCorrect();
-        digitsTyped = piTest.correctDigits();
-        return CorrectResult();
+        return Observable.just(CorrectResult());
       }
+      return Observable.just(IncorrectResult());
     }
-    return IncorrectResult();
+
+    if(intent is ResetIntent){
+      piTest.reset();
+      return Observable.just(ResetResult());
+    }
+    return Observable.empty();
   }
 
   /// Output
   PITesterViewState resultToState(PITesterResult result) {
     if(result is CorrectResult){
-      return PITesterViewState(digitsTyped,
+      return PITesterViewState(piTest.correctDigits(),
           piTest.currentDigit.toString());
     }
-    return PITesterViewState(digitsTyped,
+    if(result is ResetResult)
+    return PITesterViewState(piTest.correctDigits(),
         piTest.currentDigit.toString());
   }
 }

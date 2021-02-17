@@ -27,8 +27,13 @@ class PITesterViewController extends StatelessWidget {
     return Center(
       child: Column(
         children: [
-          Column(
-            children: [Text("Current Digit"), Text(viewState.currentDigit)],
+          Row(
+            children: [
+              ElevatedButton(onPressed: reset, child: Text("Rest")),
+              Column(
+                children: [Text("Current Digit"), Text(viewState.currentDigit)],
+              ),
+            ],
           ),
           Expanded(
             child: Center(
@@ -46,5 +51,9 @@ class PITesterViewController extends StatelessWidget {
 
   pressedKey(int keyNumber) {
     piTesterBloc.processInput(PressedKey(keyNumber));
+  }
+
+  reset() {
+    piTesterBloc.processInput(ResetIntent());
   }
 }

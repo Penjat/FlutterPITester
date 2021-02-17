@@ -10,6 +10,12 @@ class PiTest {
     currentDigit++;
   }
 
+  reset() {
+    hasLost = false;
+    startingDigit = 0;
+    currentDigit = 0;
+  }
+
   String correctDigits() {
     return pi_string.substring(0,currentDigit);
   }
