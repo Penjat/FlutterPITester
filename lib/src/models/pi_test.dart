@@ -1,4 +1,5 @@
 class PiTest {
+  bool hasLost = false;
   int startingDigit = 0;
   int currentDigit = 0;
   bool checkCorrect(int number) {

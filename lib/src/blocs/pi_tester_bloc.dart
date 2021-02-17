@@ -18,8 +18,9 @@ class IncorrectResult extends PITesterResult {
 }
 
 class PITesterViewState{
-  PITesterViewState(this.displayNumber);
+  PITesterViewState(this.displayNumber,this.currentDigit);
   String displayNumber;
+  String currentDigit;
 }
 
 /// Bloc
@@ -27,7 +28,7 @@ class PITesterBloc {
   final _intents = PublishSubject<PITesterIntent>();
   String digitsTyped = "";
   Observable<PITesterResult> get _results => _intents.map(intentToResult);
-  Observable<PITesterViewState> get viewState => _results.map(resultToState).startWith(PITesterViewState(digitsTyped));
+  Observable<PITesterViewState> get viewState => _results.map(resultToState).startWith(PITesterViewState(digitsTyped,"0"));
 
   PiTest piTest = PiTest();
   /// Input
@@ -52,8 +53,8 @@ class PITesterBloc {
   /// Output
   PITesterViewState resultToState(PITesterResult result) {
     if(result is CorrectResult){
-      return PITesterViewState(digitsTyped);
+      return PITesterViewState(digitsTyped,piTest.currentDigit.toString());
     }
-    return PITesterViewState(digitsTyped);
+    return PITesterViewState(digitsTyped,piTest.currentDigit.toString());
   }
 }
