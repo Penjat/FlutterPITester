@@ -53,8 +53,10 @@ class PITesterBloc {
   /// Output
   PITesterViewState resultToState(PITesterResult result) {
     if(result is CorrectResult){
-      return PITesterViewState(digitsTyped,piTest.currentDigit.toString());
+      return PITesterViewState(digitsTyped,
+          piTest.currentDigit.toString());
     }
-    return PITesterViewState(digitsTyped,piTest.currentDigit.toString());
+    return PITesterViewState(digitsTyped,
+        piTest.currentDigit.toString());
   }
 }
