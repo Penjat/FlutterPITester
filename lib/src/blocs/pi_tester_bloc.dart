@@ -6,7 +6,7 @@ class PITesterBloc {
   final _intents = PublishSubject<PITesterIntent>();
   int numberOfPresses = 0;
   Observable<PITesterResult> get _results => _intents.map(intentToResult);
-  Observable<PITesterViewState> get viewState => _results.map(resultToState);
+  Observable<PITesterViewState> get viewState => _results.map(resultToState).startWith(PITesterViewState("this is the initial state."));
 
   void processInput(PITesterIntent intent){
     _intents.sink.add(intent);
