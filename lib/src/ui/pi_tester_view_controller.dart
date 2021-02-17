@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_pi_tester/src/blocs/pi_tester_bloc.dart';
 import 'package:reactive_pi_tester/src/ui/digit_keypad.dart';
+import 'package:flutter/animation.dart';
 
 class PITesterViewController extends StatelessWidget {
   PITesterViewController(this.piTesterBloc);
@@ -39,16 +40,27 @@ class PITesterViewController extends StatelessWidget {
           children: [
             Expanded(
               child: Center(
-                child: Text(
-                  viewState.displayNumber,
-                  style: TextStyle(fontSize: 20.0, color: Colors.amberAccent),
+                child: TweenAnimationBuilder(
+                  child: Text(
+                    viewState.displayNumber,
+                    key: ValueKey<String>(viewState.displayNumber),
+                    style: TextStyle(fontSize: 20.0, color: Colors.amberAccent),
+                  ),
+                  key: ValueKey<String>(viewState.displayNumber),
+                  tween: Tween<double>(begin: 1, end: 0),
+                  duration: Duration(seconds: 2),
+                  builder: (BuildContext context, double _val, Widget child) {
+                    return Opacity(opacity: _val, child: child,);
+                  },
                 ),
               ),
             ),
             DigitKeypad(pressedKey),
           ],
-        ),
-      ),
+        )
+        ,
+      )
+      ,
     );
   }
 
