@@ -6,7 +6,6 @@ class PITesterViewController extends StatelessWidget {
   PITesterBloc piTesterBloc;
   @override
   Widget build(BuildContext context) {
-    // bloc.fetchAllMovies();
     return StreamBuilder(
       stream: piTesterBloc.viewState,
       builder: (context, AsyncSnapshot<PITesterViewState> snapshot) {
@@ -20,6 +19,6 @@ class PITesterViewController extends StatelessWidget {
     );
   }
   void keyPressed() {
-    piTesterBloc.processInput(PressedKey());
+    piTesterBloc.processInput(PressedKey(4));
   }
 }

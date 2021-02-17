@@ -1,23 +1,47 @@
-// import '../resources/repository.dart';
+import 'dart:io';
 import 'package:rxdart/rxdart.dart';
-// import '../models/item_model.dart';
+
 
 class PITesterBloc {
   final _intents = PublishSubject<PITesterIntent>();
+  int numberOfPresses = 0;
+  Observable<PITesterResult> get _results => _intents.map(intentToResult);
+  Observable<PITesterViewState> get viewState => _results.map(resultToState);
 
-  Observable<PITesterViewState> get viewState => _intents.map((intent) => PITesterViewState("hello"));
   void processInput(PITesterIntent intent){
     _intents.sink.add(intent);
   }
 
-  String getString() {
-    return "this is from the view model";
+  PITesterViewState resultToState(PITesterResult result) {
+    if(result is CorrectResult){
+      return PITesterViewState("that is correct");
+    }
+    return PITesterViewState("hello this is from a function " + numberOfPresses.toString());
+  }
+
+  PITesterResult intentToResult(PITesterIntent intent) {
+    if(intent is PressedKey) {
+      PressedKey pressedKeyIntnet = intent as PressedKey;
+      if(pressedKeyIntnet.keyNumber == 4) {
+        return CorrectResult();
+      }
+    }
+    return IncorrectResult();
   }
 }
 
 abstract class PITesterIntent{}
 class PressedKey extends PITesterIntent {
+  PressedKey(this.keyNumber);
   int keyNumber;
+}
+
+abstract class PITesterResult{}
+class CorrectResult extends PITesterResult {
+
+}
+class IncorrectResult extends PITesterResult {
+
 }
 
 class PITesterViewState{
