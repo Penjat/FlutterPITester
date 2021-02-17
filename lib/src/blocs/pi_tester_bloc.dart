@@ -23,11 +23,14 @@ class PITesterViewState{
 
 /// Bloc
 class PITesterBloc {
+  PITesterBloc(this.piTest);
+
+  PiTest piTest;
+  
   final _intents = PublishSubject<PITesterIntent>();
   Observable<PITesterResult> get _results => _intents.flatMap(intentToResult);
   Observable<PITesterViewState> get viewState => _results.map(resultToState).startWith(PITesterViewState("","0"));
 
-  PiTest piTest = PiTest();
   /// Input
   void processInput(PITesterIntent intent){
     _intents.sink.add(intent);
