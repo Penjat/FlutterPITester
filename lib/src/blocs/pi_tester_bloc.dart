@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:reactive_pi_tester/src/models/pi_test.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// I/O
@@ -28,6 +29,7 @@ class PITesterBloc {
   Observable<PITesterResult> get _results => _intents.map(intentToResult);
   Observable<PITesterViewState> get viewState => _results.map(resultToState).startWith(PITesterViewState(digitsTyped));
 
+  PiTest piTest = PiTest();
   /// Input
   void processInput(PITesterIntent intent){
     _intents.sink.add(intent);
@@ -37,8 +39,10 @@ class PITesterBloc {
   PITesterResult intentToResult(PITesterIntent intent) {
     if(intent is PressedKey) {
       PressedKey pressedKeyIntnet = intent as PressedKey;
-      digitsTyped = digitsTyped + pressedKeyIntnet.keyNumber.toString();
-      if(pressedKeyIntnet.keyNumber == 4) {
+      piTest.checkCorrect(pressedKeyIntnet.keyNumber);
+      if(piTest.checkCorrect(pressedKeyIntnet.keyNumber)) {
+        piTest.addCorrect();
+        digitsTyped = piTest.correctDigits();
         return CorrectResult();
       }
     }
