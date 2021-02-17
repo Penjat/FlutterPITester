@@ -17,8 +17,7 @@ class PITesterViewController extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Text(snapshot.error.toString());
         }
-        return ElevatedButton(
-            onPressed: pressedKey(9), child: Text("no data yet"));
+        return Text("no data yet");
       },
     );
   }

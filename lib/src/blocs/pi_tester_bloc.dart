@@ -35,10 +35,11 @@ class PITesterBloc {
 
   /// Internal (side effects)
   Stream<PITesterResult> intentToResult(PITesterIntent intent) {
+    // return intents.flatMap((intent) => Observable.just(CorrectResult()));
     if(intent is PressedKey) {
-      PressedKey pressedKeyIntnet = intent as PressedKey;
-      piTest.checkCorrect(pressedKeyIntnet.keyNumber);
-      if(piTest.checkCorrect(pressedKeyIntnet.keyNumber)) {
+      PressedKey pressedKeyIntent = intent as PressedKey;
+      piTest.checkCorrect(pressedKeyIntent.keyNumber);
+      if(piTest.checkCorrect(pressedKeyIntent.keyNumber)) {
         piTest.addCorrect();
         return Observable.just(CorrectResult());
       }
@@ -55,6 +56,10 @@ class PITesterBloc {
   /// Output
   PITesterViewState resultToState(PITesterResult result) {
     if(result is CorrectResult){
+      return PITesterViewState(piTest.correctDigits(),
+          piTest.currentDigit.toString());
+    }
+    if(result is IncorrectResult){
       return PITesterViewState(piTest.correctDigits(),
           piTest.currentDigit.toString());
     }
