@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_pi_tester/src/blocs/pi_tester_bloc.dart';
-import 'package:reactive_pi_tester/src/ui/Keypad.dart';
+import 'package:reactive_pi_tester/src/ui/digit_keypad.dart';
 
 class PITesterViewController extends StatelessWidget {
   PITesterViewController(this.piTesterBloc);
