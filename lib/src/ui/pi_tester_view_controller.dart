@@ -17,34 +17,46 @@ class PITesterViewController extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Text(snapshot.error.toString());
         }
-        return ElevatedButton(
-            onPressed: pressedKey(9), child: Text("no data yet"));
+        return Text("no data yet");
       },
     );
   }
 
   Widget View(PITesterViewState viewState) {
-    return Center(
-      child: Column(
-        children: [
-          Column(
-            children: [Text("Current Digit"), Text(viewState.currentDigit)],
-          ),
-          Expanded(
-            child: Center(
-              child: Text(
-                viewState.displayNumber,
-                style: TextStyle(fontSize: 20.0, color: Colors.amberAccent),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.purple,
+        leading: Text("pi Tester"),
+        title: Column(
+          children: [Text("Current Digit"), Text(viewState.currentDigit)],
+        ),
+        actions: [
+          ElevatedButton(onPressed: reset, child: Text("Reset")),
+        ],
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: Text(
+                  viewState.displayNumber,
+                  style: TextStyle(fontSize: 20.0, color: Colors.amberAccent),
+                ),
               ),
             ),
-          ),
-          DigitKeypad(pressedKey),
-        ],
+            DigitKeypad(pressedKey),
+          ],
+        ),
       ),
     );
   }
 
   pressedKey(int keyNumber) {
     piTesterBloc.processInput(PressedKey(keyNumber));
+  }
+
+  reset() {
+    piTesterBloc.processInput(ResetIntent());
   }
 }
