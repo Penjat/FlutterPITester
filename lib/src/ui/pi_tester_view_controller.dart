@@ -7,8 +7,17 @@ class PITesterViewController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // bloc.fetchAllMovies();
-    return ElevatedButton(onPressed: keyPressed,
-    child: Text("button text"));
+    return StreamBuilder(
+      stream: piTesterBloc.viewState,
+      builder: (context, AsyncSnapshot<PITesterViewState> snapshot) {
+        if (snapshot.hasData) {
+          return ElevatedButton(onPressed: keyPressed, child: Text(snapshot.data.displayNumber));
+        } else if (snapshot.hasError) {
+          return Text(snapshot.error.toString());
+        }
+        return ElevatedButton(onPressed: keyPressed, child: Text("no data yet"));
+      },
+    );
   }
   void keyPressed() {
     piTesterBloc.processInput(PressedKey());
