@@ -29,38 +29,43 @@ class PITesterViewController extends StatelessWidget {
         backgroundColor: Colors.purple,
         leading: Text("pi Tester"),
         title: Column(
-          children: [Text("Current Digit"), Text(viewState.currentDigit)],
+          children: [
+            Text("Current Digit"),
+            AnimatedSwitcher(
+              child: Text(viewState.currentDigit,
+                  key: ValueKey<String>(viewState.currentDigit)),
+              duration: const Duration(milliseconds: 400),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return ScaleTransition(child: child, scale: animation);
+              },
+            ),
+          ],
         ),
         actions: [
           ElevatedButton(onPressed: reset, child: Text("Reset")),
         ],
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Expanded(
-              child: Center(
-                child: TweenAnimationBuilder(
-                  child: Text(
-                    viewState.displayNumber,
-                    key: ValueKey<String>(viewState.displayNumber),
-                    style: TextStyle(fontSize: 20.0, color: Colors.amberAccent),
+      body: Stack(
+        children: [
+          Center(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      viewState.displayNumber,
+                      key: ValueKey<String>(viewState.displayNumber),
+                      style:
+                          TextStyle(fontSize: 20.0, color: Colors.amberAccent),
+                    ),
                   ),
-                  key: ValueKey<String>(viewState.displayNumber),
-                  tween: Tween<double>(begin: 1, end: 0),
-                  duration: Duration(seconds: 2),
-                  builder: (BuildContext context, double _val, Widget child) {
-                    return Opacity(opacity: _val, child: child,);
-                  },
                 ),
-              ),
+                DigitKeypad(pressedKey),
+              ],
             ),
-            DigitKeypad(pressedKey),
-          ],
-        )
-        ,
-      )
-      ,
+          ),
+        ],
+      ),
     );
   }
 

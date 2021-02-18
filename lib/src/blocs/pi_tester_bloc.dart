@@ -29,7 +29,7 @@ class PITesterBloc {
   
   final _intents = PublishSubject<PITesterIntent>();
   Observable<PITesterResult> get _results => _intents.flatMap(intentToResult);
-  Observable<PITesterViewState> get viewState => _results.map(resultToState).startWith(PITesterViewState("","0"));
+  Observable<PITesterViewState> get viewState => _results.map(resultToState).startWith(PITesterViewState("", "0"));
 
   /// Input
   void processInput(PITesterIntent intent){
