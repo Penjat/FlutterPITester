@@ -47,6 +47,7 @@ class PITesterViewController extends StatelessWidget {
       ),
       body: Stack(
         children: [
+          flashedDigit(viewState.flashDigit),
           Center(
             child: Column(
               children: [
@@ -56,7 +57,7 @@ class PITesterViewController extends StatelessWidget {
                       viewState.displayNumber,
                       key: ValueKey<String>(viewState.displayNumber),
                       style:
-                          TextStyle(fontSize: 20.0, color: Colors.amberAccent),
+                      TextStyle(fontSize: 20.0, color: Colors.amberAccent),
                     ),
                   ),
                 ),
@@ -67,6 +68,20 @@ class PITesterViewController extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget flashedDigit(String digit) {
+    return digit == null
+        ? Container()
+        : TweenAnimationBuilder(
+      tween: Tween<double>(begin: 1, end: 0),
+      duration: Duration(seconds: 1),
+      builder: (context, value, child) {
+        return Center(
+          child: Opacity(
+            opacity: value,
+              child: Text(digit, style: TextStyle(fontSize: value * 100))));
+      });
   }
 
   pressedKey(int keyNumber) {

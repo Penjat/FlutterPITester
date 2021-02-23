@@ -16,9 +16,10 @@ class IncorrectResult extends PITesterResult {}
 class ResetResult extends PITesterResult {}
 
 class PITesterViewState{
-  PITesterViewState(this.displayNumber,this.currentDigit);
+  PITesterViewState(this.displayNumber,this.currentDigit,this.flashDigit);
   String displayNumber;
   String currentDigit;
+  String flashDigit;
 }
 
 /// Bloc
@@ -29,7 +30,7 @@ class PITesterBloc {
   
   final _intents = PublishSubject<PITesterIntent>();
   Observable<PITesterResult> get _results => _intents.flatMap(intentToResult);
-  Observable<PITesterViewState> get viewState => _results.map(resultToState).startWith(PITesterViewState("", "0"));
+  Observable<PITesterViewState> get viewState => _results.map(resultToState).startWith(PITesterViewState("", "0",null));
 
   /// Input
   void processInput(PITesterIntent intent){
@@ -59,15 +60,18 @@ class PITesterBloc {
   /// Output
   PITesterViewState resultToState(PITesterResult result) {
     if(result is CorrectResult) {
-      return PITesterViewState(piTest.correctDigits(),
-          piTest.currentDigit.toString());
+      return PITesterViewState(
+          piTest.correctDigits(),
+          piTest.currentDigit.toString(),
+          "i"
+      );
     }
     if(result is IncorrectResult){
       return PITesterViewState(piTest.correctDigits(),
-          piTest.currentDigit.toString());
+          piTest.currentDigit.toString(),null);
     }
     if(result is ResetResult)
     return PITesterViewState(piTest.correctDigits(),
-        piTest.currentDigit.toString());
+        piTest.currentDigit.toString(),null);
   }
 }
