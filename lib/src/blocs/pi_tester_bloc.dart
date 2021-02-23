@@ -11,7 +11,10 @@ class PressedKey extends PITesterIntent {
 class ResetIntent extends PITesterIntent {}
 
 abstract class PITesterResult{}
-class CorrectResult extends PITesterResult {}
+class CorrectResult extends PITesterResult {
+  CorrectResult(this.flashDigit);
+  String flashDigit;
+}
 class IncorrectResult extends PITesterResult {}
 class ResetResult extends PITesterResult {}
 
@@ -45,7 +48,7 @@ class PITesterBloc {
       piTest.checkCorrect(pressedKeyIntent.keyNumber);
       if(piTest.checkCorrect(pressedKeyIntent.keyNumber)) {
         piTest.addCorrect();
-        return Observable.just(CorrectResult());
+        return Observable.just(CorrectResult(pressedKeyIntent.keyNumber.toString()));
       }
       return Observable.just(IncorrectResult());
     }
@@ -63,7 +66,7 @@ class PITesterBloc {
       return PITesterViewState(
           piTest.correctDigits(),
           piTest.currentDigit.toString(),
-          "i"
+          result.flashDigit
       );
     }
     if(result is IncorrectResult){

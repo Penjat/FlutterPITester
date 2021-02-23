@@ -45,27 +45,24 @@ class PITesterViewController extends StatelessWidget {
           ElevatedButton(onPressed: reset, child: Text("Reset")),
         ],
       ),
-      body: Stack(
-        children: [
-          flashedDigit(viewState.flashDigit),
-          Center(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      viewState.displayNumber,
-                      key: ValueKey<String>(viewState.displayNumber),
-                      style:
-                      TextStyle(fontSize: 20.0, color: Colors.amberAccent),
-                    ),
+      body: Center(
+        child: Column(
+          children: [
+            Expanded(
+              child: Stack(children: [
+                flashedDigit(viewState.flashDigit),
+                Center(
+                  child: Text(
+                    viewState.displayNumber,
+                    key: ValueKey<String>(viewState.displayNumber),
+                    style: TextStyle(fontSize: 20.0, color: Colors.amberAccent),
                   ),
                 ),
-                DigitKeypad(pressedKey),
-              ],
+              ]),
             ),
-          ),
-        ],
+            DigitKeypad(pressedKey),
+          ],
+        ),
       ),
     );
   }
@@ -74,14 +71,16 @@ class PITesterViewController extends StatelessWidget {
     return digit == null
         ? Container()
         : TweenAnimationBuilder(
-      tween: Tween<double>(begin: 1, end: 0),
-      duration: Duration(seconds: 1),
-      builder: (context, value, child) {
-        return Center(
-          child: Opacity(
-            opacity: value,
-              child: Text(digit, style: TextStyle(fontSize: value * 100))));
-      });
+            key: ValueKey<String>(digit),
+            tween: Tween<double>(begin: 1, end: 0),
+            duration: Duration(seconds: 1),
+            builder: (context, value, child) {
+              return Center(
+                  child: Opacity(
+                      opacity: value,
+                      child: Text(digit,
+                          style: TextStyle(fontSize: value * 100))));
+            });
   }
 
   pressedKey(int keyNumber) {
