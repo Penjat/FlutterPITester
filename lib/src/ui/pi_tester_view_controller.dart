@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reactive_pi_tester/src/Styles.dart';
 import 'package:reactive_pi_tester/src/blocs/pi_tester_bloc.dart';
 import 'package:reactive_pi_tester/src/ui/digit_keypad.dart';
 import 'package:flutter/animation.dart';
@@ -55,7 +56,7 @@ class PITesterViewController extends StatelessWidget {
                   child: Text(
                     viewState.displayNumber,
                     key: ValueKey<String>(viewState.displayNumber),
-                    style: TextStyle(fontSize: 20.0, color: Colors.amberAccent),
+                    style: PiStyles.correctDigitsStyle,
                   ),
                 ),
               ]),
